@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.css') }}">
+    <title>Cookies</title>
+</head>
+<body class="bg-dark">
+    <div class="container mt-5 col-8">
+
+        <!-- container for orders table -->
+        <div class="container-md col-9 p-3">
+
+            <div class="card p-5 bg-light">
+                <div class="card-header text-center mb-3">
+                    <h1>All Orders</h1>
+                    <p class="text-center"><a href="/cookies/new">+ New Order</a></p>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Cookie Type</th>
+                            <th>Number of Boxes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { for order in orders %}
+                        <tr>
+                            <td>{ customer_name }}</td>
+                            <td>{ cookie_type }}</td>
+                            <td>{ num_boxes }}</td>
+                            <td><a href="{ order.id }}">Edit</a></td>
+                        </tr>
+                        { endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+                <p><a href="/cookies/edit">To edit existing orders page... -placeholder- </a></p>
+            </div>
+        </div>
+    </body>
+</html>
