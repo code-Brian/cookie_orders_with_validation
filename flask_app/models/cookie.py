@@ -30,7 +30,13 @@ class Cookie:
         results = connectToMySQL('cookie_orders').query_db(query)
 
         for row in results:
-            customers.append(row)
+            print(f'{row} PRINTING ROW ---------------------------------------------------------------')
+            customers.append(row['customer_name'])
+
+        
+        print(f'{customers} CUSTOMERS LIST AFTER FOR LOOP --------------------------------------------------')
+
+        print(f"{cookie['customer_name']} CUSTOMER NAME PASSED IN FROM FROM --------------------------------------)")
 
         if cookie['customer_name'] in customers:
             flash(u'Customer name already exists', 'customer_name')
@@ -42,6 +48,23 @@ class Cookie:
         
         if not NUMBOXES_REGEX.match(cookie['num_boxes']):
             flash(u'Must order at least one box of cookies. Positive integers only.', 'num_boxes')
+            is_valid = False
+        
+        return is_valid
 
 
     # CLASS METHODS
+
+    @classmethod
+    def get_all(cls):
+        query = '''
+        SELECT * FROM cookie_orders;
+        '''
+        results = connectToMySQL('cookie_orders').query_db(query)
+
+        all_orders = []
+
+        for row in results:
+            all_orders.append(cls(row))
+        
+        return all_orders

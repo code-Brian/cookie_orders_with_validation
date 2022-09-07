@@ -6,9 +6,7 @@ from flask import Flask, render_template, redirect, request, session
 def r_cookies():
     print('Returing to cookies home page...')
 
-    # get_all cookies from database function will go here
-
-    return render_template('cookies.html')
+    return render_template('cookies.html', orders=Cookie.get_all())
 
 @app.route('/cookies/new')
 def r_cookies_new():
@@ -22,3 +20,18 @@ def r_cookies_edit():
     print('Directing to edit existing order page...')
 
     return render_template('cookies_update.html')
+
+@app.route('/cookies/save', methods=['POST'])
+def f_cookies_save():
+    print('Create new cookie order form submitted...')
+    if not Cookie.validate_cookie(request.form):
+
+        session['customer_name'] = request.form.get('customer_name')
+        session['cookie_type'] = request.form.get('cookie_type')
+        session['num_boxes'] = request.form.get('num_boxes')
+
+        return redirect('/cookies/new')
+
+    session.clear()
+
+    return redirect('/cookies')

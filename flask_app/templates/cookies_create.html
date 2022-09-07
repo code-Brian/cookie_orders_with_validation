@@ -13,26 +13,37 @@
         <div class="container col-5 p-3">
 
             <div class="card p-5 bg-light">
-
                 <div class="card-header mb-3 text-center">
                     <h1>Log a New Order</h1>
                     <p class="d-flex justify-content-center align-items-center"><a href="/cookies">Back to Purchases</a></p>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class="flashes list-group">
+                        {% for category, message in messages %}
+                        <li class="{{ category }} list-group-item list-group-item-danger"> {{ message }} </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
                 </div>
 
-                <form action="cookies/save" method="post">
-                    
-                    <label class="form-label" for="customer_name">Name</label>
-                    <input class="form-control" type="text" name="customer_name" value="{ session['customer_name'] }}" required>
-                    
-                    <label class="form-label" for="cookie_type">Cookie Type</label>
-                    <input class="form-control" type="text" name="cookie_type" value="{ session['cookie_type'] }}" required>
-                    
-                    <label class="form-label" for="num_boxes">Number of Boxes</label>
-                    <input class="form-control" type="text" name="num_boxes" value="{ session['num_boxes'] }}" required>
-                    
-                    <input class="btn btn-primary mt-3" type="submit" name="submit" value="Log">
-                    
-                </form>
+                <div class="card-body">
+                    <form action="/cookies/save" method="post">
+                        
+                        <label class="form-label" for="customer_name">Name</label>
+                        <input class="form-control" type="text" name="customer_name" value="{{ session['customer_name'] }}" required>
+                        
+                        <label class="form-label" for="cookie_type">Cookie Type</label>
+                        <input class="form-control" type="text" name="cookie_type" value="{{ session['cookie_type'] }}" required>
+                        
+                        <label class="form-label" for="num_boxes">Number of Boxes</label>
+                        <input class="form-control" type="text" name="num_boxes" value="{{ session['num_boxes'] }}" required>
+                        
+                        <input class="btn btn-primary mt-3" type="submit" name="submit" value="Log">
+                        
+                    </form>
+                </div>
+
             </div>
 
         </div>
