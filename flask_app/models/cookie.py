@@ -52,6 +52,19 @@ class Cookie:
         
         return is_valid
 
+    @staticmethod
+    def validate_update_cookie(cookie):
+        is_valid = True
+        
+        if len(cookie['cookie_type']) < 5:
+            flash(u'Cookie type must be at least 5 characters.', 'cookie_type')
+            is_valid = False
+        
+        if not NUMBOXES_REGEX.match(cookie['num_boxes']):
+            flash(u'Must order at least one box of cookies. Positive integers only.', 'num_boxes')
+            is_valid = False
+        
+        return is_valid
 
     # CLASS METHODS
 
@@ -68,3 +81,33 @@ class Cookie:
             all_orders.append(cls(row))
         
         return all_orders
+
+    @classmethod
+    def get_one(cls, data):
+        query = '''
+        SELECT * FROM cookie_orders WHERE id = %(id)s;
+        '''
+        result = connectToMySQL('cookie_orders').query_db(query,data)
+
+        return cls(result[0])
+    
+    @classmethod
+    def save(cls, data):
+        query = '''
+        INSERT INTO cookie_orders (customer_name, cookie_type, num_boxes)
+        VALUES (%(customer_name)s, %(cookie_type)s, %(num_boxes)s);
+        '''
+        return connectToMySQL('cookie_orders').query_db(query, data)
+    
+    @classmethod
+    def update(cls, data):
+        query = '''
+        UPDATE cookie_orders
+        SET 
+        customer_name = %(customer_name)s,
+        cookie_type = %(cookie_type)s,
+        num_boxes = %(num_boxes)s
+        WHERE id = %(id)s;
+        '''
+        return connectToMySQL('cookie_orders').query_db(query, data)
+
